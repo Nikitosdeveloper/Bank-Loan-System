@@ -12,19 +12,19 @@ import java.sql.Timestamp;
 @ToString
 @EqualsAndHashCode
 public class CreditPolicies {
-    public Long id;
-    public String policyName;
-    public BigDecimal minAmount;
-    public BigDecimal maxAmount;
-    public Integer minTerm;
-    public Integer maxTerm;
-    public Integer minAge;
-    public Integer maxAge;
-    public BigDecimal min_income;
-    public BigDecimal baseInterestRate;
-    public Boolean isActive;
-    public Long createdById;
-    public Timestamp createdAt;
-    public Timestamp updatedAt;
-    public String scoringRules;
+    private Long id;
+    private String policyName;
+    private BigDecimal minAmount;
+    private BigDecimal maxAmount;
+    private Integer minTerm;
+    private Integer maxTerm;
+    private Integer minAge;
+    private Integer maxAge;
+    private BigDecimal min_income;
+    private BigDecimal baseInterestRate;
+    private Boolean isActive;
+    private Long createdById;
+    private Timestamp createdAt;
+    private Timestamp updatedAt;
+    private String scoringRules;
 }
