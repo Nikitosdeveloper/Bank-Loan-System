@@ -14,7 +14,7 @@ import java.time.Instant;
 public class StubUserRepository implements UserRepositoryImpl {
 
     @Override
-    public User findById(int id) {
+    public User findById(Long id) {
         return new User(
                 3L,
                 "testemail@gmail.com",
