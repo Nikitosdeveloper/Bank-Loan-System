@@ -19,7 +19,7 @@ public class LoanApplication {
     private Long userId;
     private Long managerId;
     private BigDecimal loanAmount;
-    private BigDecimal loanTerm;
+    private Integer loanTerm;
     private Long purposeId;
     private String description;
     private LoanApplicationStatus status;
