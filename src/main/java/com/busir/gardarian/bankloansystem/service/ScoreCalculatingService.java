@@ -26,7 +26,12 @@ public class ScoreCalculatingService {
         Integer ageScore = calculateAgeScore(info.getAge(), setting);
         Integer income = calculateIncomeScore(info.getTotalIncome(), setting);
 
-        return ageScore + income;
+        Integer notNormalizedScore = ageScore + income;
+
+        Integer minScore = calculateMinScore(setting);
+        Integer maxScore = calculateMaxScore(setting);
+
+        return normalizedScore(minScore, maxScore, notNormalizedScore);
     }
 
     private CreditPolicySetting parseCreditPolicySetting(CreditPolicies creditPolicy) throws JsonProcessingException {
@@ -86,5 +91,81 @@ public class ScoreCalculatingService {
                 return age >= min && age <= max;
             }
         return false;
+    }
+
+    private Integer normalizedScore(Integer min, Integer max, Integer score) {
+        Double dMin = Double.valueOf(min);
+        Double dMax = Double.valueOf(max);
+        Double dScore = Double.valueOf(score);
+
+        double dNormalizedScore = (dScore - dMin) / (dMax - dMin) * 100;
+
+        return Math.toIntExact(Math.round(dNormalizedScore));
+    }
+
+    private Integer calculateMinScore(CreditPolicySetting setting) {
+
+        if(setting == null){
+            return 0;
+        }
+
+        Map<String, Integer> incomeWeights = setting.getIncomeWeights();
+        Map<String, Integer> ageWeights = setting.getAgeWeight();
+
+            Integer minIncomeScore = null;
+            Integer minAgeScore = null;
+
+            for (Map.Entry<String, Integer> entry : incomeWeights.entrySet()) {
+                if (minIncomeScore == null) {
+                    minIncomeScore = entry.getValue();
+                }else{
+                    minIncomeScore = Math.min(minIncomeScore, entry.getValue());
+                }
+            }
+
+        for (Map.Entry<String, Integer> entry : ageWeights.entrySet()) {
+            if (minAgeScore == null) {
+                minAgeScore = entry.getValue();
+            }else{
+                minAgeScore = Math.min(minAgeScore, entry.getValue());
+            }
+        }
+        if (minIncomeScore == null || minAgeScore == null) {
+            return 0;
+        }
+        return minAgeScore + minIncomeScore;
+    }
+
+    private Integer calculateMaxScore(CreditPolicySetting setting) {
+
+        if(setting == null){
+            return 0;
+        }
+
+        Map<String, Integer> incomeWeights = setting.getIncomeWeights();
+        Map<String, Integer> ageWeights = setting.getAgeWeight();
+
+        Integer maxIncomeScore = null;
+        Integer maxAgeScore = null;
+
+        for (Map.Entry<String, Integer> entry : incomeWeights.entrySet()) {
+            if (maxIncomeScore == null) {
+                maxIncomeScore = entry.getValue();
+            }else{
+                maxIncomeScore = Math.max(maxIncomeScore, entry.getValue());
+            }
+        }
+
+        for (Map.Entry<String, Integer> entry : ageWeights.entrySet()) {
+            if (maxAgeScore == null) {
+                maxAgeScore = entry.getValue();
+            }else{
+                maxAgeScore = Math.max(maxAgeScore, entry.getValue());
+            }
+        }
+        if (maxIncomeScore == null || maxAgeScore == null) {
+            return 0;
+        }
+        return maxAgeScore + maxIncomeScore;
     }
 }
