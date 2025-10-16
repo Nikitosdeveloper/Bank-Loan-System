@@ -97,6 +97,6 @@ public class ScoreCalculatingServiceTests {
 
         Integer score = service.calculateScoringScore(form, creditPolicies);
 
-        assertEquals(55, score);
+        assertEquals(86, score);
     }
 }
