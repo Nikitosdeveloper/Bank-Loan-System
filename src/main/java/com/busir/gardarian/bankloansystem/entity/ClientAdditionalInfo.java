@@ -1,7 +1,15 @@
 package com.busir.gardarian.bankloansystem.entity;
 
+import lombok.*;
+
 import java.math.BigDecimal;
 
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor
 public class ClientAdditionalInfo {
     private Long id;
     private Long userId;
