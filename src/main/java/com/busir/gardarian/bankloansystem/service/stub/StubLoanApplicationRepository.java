@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
-@Profile("dev")
+@Profile("devService")
 public class StubLoanApplicationRepository implements LoanApplicationRepositoryImpl {
 
     private final ConcurrentHashMap<Long, LoanApplication> stubData = new ConcurrentHashMap<>();
