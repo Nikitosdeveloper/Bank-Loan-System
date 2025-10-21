@@ -3,6 +3,7 @@ package com.busir.gardarian.bankloansystem.service;
 import com.busir.gardarian.bankloansystem.entity.Document;
 import com.busir.gardarian.bankloansystem.entity.enums.DocumentType;
 import com.busir.gardarian.bankloansystem.entity.enums.DocumentVerificationStatus;
+import com.busir.gardarian.bankloansystem.service.dto.DocumentDecision;
 import com.busir.gardarian.bankloansystem.service.dto.DocumentResult;
 import com.busir.gardarian.bankloansystem.service.exception.DocumentIsEmptyException;
 import com.busir.gardarian.bankloansystem.service.exception.DocumentsNameException;
@@ -113,6 +114,15 @@ public class DocumentService {
                     return new DocumentResult(docs, resource);
                 })
                 .toList();
+    }
+
+    public void documentVerification(DocumentDecision decision){
+        Document document = documentRepository.findById(decision.getDocumentId());
+
+        document.setVerificationStatus(decision.getVerificationStatus());
+        document.setVerificationsNotes(decision.getVerificationNotes());
+
+        documentRepository.save(document);
     }
 
     private String getFileExtension(String fileName) {
