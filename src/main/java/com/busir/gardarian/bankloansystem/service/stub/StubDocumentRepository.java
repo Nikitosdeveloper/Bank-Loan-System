@@ -117,7 +117,7 @@ public class StubDocumentRepository implements DocumentRepositoryImp {
     }
 
     @Override
-    public Document findById(int id) {
+    public Document findById(Long id) {
         return new Document(
                 1L,
                 1L,
@@ -137,7 +137,7 @@ public class StubDocumentRepository implements DocumentRepositoryImp {
     }
 
     @Override
-    public Boolean deleteById(int id) {
+    public Boolean deleteById(Long id) {
         return true;
     }
 }

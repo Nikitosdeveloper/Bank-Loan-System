@@ -11,7 +11,7 @@ public interface DocumentRepositoryImp {
     List<Document> findByLoanApplicationId(Long id);
     List<Document> findByDocumentType(DocumentType type);
     List<Document> findByDocumentVerificationStatus(DocumentVerificationStatus verificationStatus);
-    Document findById(int id);
+    Document findById(Long id);
     Document save(Document document);
-    Boolean deleteById(int id);
+    Boolean deleteById(Long id);
 }
