@@ -3,8 +3,8 @@ package com.busir.gardarian.bankloansystem.service;
 import com.busir.gardarian.bankloansystem.entity.CreditPolicies;
 import com.busir.gardarian.bankloansystem.entity.LoanApplication;
 import com.busir.gardarian.bankloansystem.entity.enums.LoanApplicationStatus;
-import com.busir.gardarian.bankloansystem.service.dto.CreditPolicySetting;
 import com.busir.gardarian.bankloansystem.service.dto.LoanApplicationForm;
+import com.busir.gardarian.bankloansystem.service.dto.LoanApplicationResult;
 import com.busir.gardarian.bankloansystem.service.exception.LoanPurposeNotFound;
 import com.busir.gardarian.bankloansystem.service.exception.NoActiveCreditPolicy;
 import com.busir.gardarian.bankloansystem.service.exception.UserNotFoundException;
@@ -13,13 +13,12 @@ import com.busir.gardarian.bankloansystem.service.interfaces.LoanApplicationRepo
 import com.busir.gardarian.bankloansystem.service.interfaces.LoanPurposeRepositoryImpl;
 import com.busir.gardarian.bankloansystem.service.interfaces.UserRepositoryImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -54,6 +53,21 @@ public class LoanApplicationService {
         loanApplication =  loanApplicationRepository.save(loanApplication);
 
         return loanApplication.getId();
+    }
+
+    public LoanApplicationResult getLoanApplicationStatus(Long id){
+        return new LoanApplicationResult(loanApplicationRepository.getById(id));
+    }
+
+    public List<LoanApplicationResult> getHistoryLoanApplication(Long userId){
+        List<LoanApplication> loanApplications = loanApplicationRepository.getByUserId(userId);
+
+        List<LoanApplicationResult> results = loanApplications
+                .stream()
+                .map(LoanApplicationResult::new)
+                .toList();
+
+        return results;
     }
 
     private LoanApplication loanApplicationProcessing(LoanApplicationForm loanApplicationForm, CreditPolicies creditPolicies) throws JsonProcessingException {
