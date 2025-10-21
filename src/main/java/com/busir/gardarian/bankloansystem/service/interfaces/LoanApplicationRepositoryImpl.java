@@ -6,10 +6,10 @@ import java.util.List;
 
 public interface LoanApplicationRepositoryImpl {
     List<LoanApplication> getAll();
-    List<LoanApplication> getById(Long id);
+    LoanApplication getById(Long id);
     List<LoanApplication> getByManagerId(Long id);
     List<LoanApplication> getFreeLoanApplications();
-    LoanApplication getByUserId(Long userId);
+    List<LoanApplication> getByUserId(Long userId);
     LoanApplication save(LoanApplication loanApplication);
     Boolean delete(Long id);
 }

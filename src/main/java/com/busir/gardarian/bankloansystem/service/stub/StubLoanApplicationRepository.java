@@ -12,6 +12,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 
 @Repository
 @Profile("devService")
@@ -87,9 +88,9 @@ public class StubLoanApplicationRepository implements LoanApplicationRepositoryI
     }
 
     @Override
-    public List<LoanApplication> getById(Long id) {
+    public LoanApplication getById(Long id) {
         LoanApplication app = stubData.get(id);
-        return app != null ? List.of(app) : List.of();
+        return app;
     }
 
     @Override
@@ -110,14 +111,13 @@ public class StubLoanApplicationRepository implements LoanApplicationRepositoryI
     }
 
     @Override
-    public LoanApplication getByUserId(Long userId) {
+    public List<LoanApplication> getByUserId(Long userId) {
         return stubData.values().stream()
                 .filter(app -> userId.equals(app.getUserId()))
                 .filter(app -> app.getStatus() != LoanApplicationStatus.REJECTED)
-                .max((a1, a2) -> a2.getCreatedAt().compareTo(a1.getCreatedAt()))
-                .orElse(null);
+                .sorted((a1, a2) -> a2.getCreatedAt().compareTo(a1.getCreatedAt()))
+                .collect(Collectors.toList());
     }
-
     @Override
     public LoanApplication save(LoanApplication loanApplication) {
         if (loanApplication.getId() == null) {
