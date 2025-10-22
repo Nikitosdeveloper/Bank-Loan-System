@@ -5,7 +5,11 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Getter
@@ -16,7 +20,7 @@ import java.time.LocalTime;
 })
 public class UserDB {
     @Id
-    @ColumnDefault("nextval('users_id_seq')")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
@@ -37,12 +41,15 @@ public class UserDB {
     private String phone;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
+    @CreationTimestamp
     @Column(name = "created_at")
-    private LocalTime createdAt;
+    private LocalDateTime createdAt;
+
 
     @ColumnDefault("CURRENT_TIMESTAMP")
+    @UpdateTimestamp
     @Column(name = "updated_at")
-    private LocalTime updatedAt;
+    private LocalDateTime updatedAt;
 
     @ColumnDefault("true")
     @Column(name = "is_active")

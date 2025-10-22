@@ -3,13 +3,14 @@ package com.busir.gardarian.bankloansystem.dao.repositoriy.models;
 import com.busir.gardarian.bankloansystem.entity.enums.LoanApplicationFinalDecision;
 import com.busir.gardarian.bankloansystem.entity.enums.LoanApplicationStatus;
 import jakarta.persistence.*;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -68,12 +69,14 @@ public class LoanApplicationDB {
     private String decisionComment;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
+    @CreationTimestamp
     @Column(name = "created_at")
-    private LocalTime createdAt;
+    private LocalDateTime createdAt;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
+    @UpdateTimestamp
     @Column(name = "updated_at")
-    private LocalTime updatedAt;
+    private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "application")
     private Set<DocumentDB> documents = new LinkedHashSet<>();

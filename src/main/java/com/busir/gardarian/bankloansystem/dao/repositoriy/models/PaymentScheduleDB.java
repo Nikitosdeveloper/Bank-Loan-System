@@ -17,7 +17,7 @@ import java.time.LocalDate;
 @Table(name = "payment_schedules", schema = "public")
 public class PaymentScheduleDB {
     @Id
-    @ColumnDefault("nextval('payment_schedules_id_seq')")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 

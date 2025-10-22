@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 @Table(name = "client_additional_info", schema = "public")
 public class ClientAdditionalInfoDB {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 

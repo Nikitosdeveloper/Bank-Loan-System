@@ -1,15 +1,14 @@
 package com.busir.gardarian.bankloansystem.dao.repositoriy.models;
 
 import jakarta.persistence.*;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.*;
 import org.hibernate.type.SqlTypes;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Map;
 
@@ -61,12 +60,14 @@ public class CreditPolicyDB {
     private UserDB createdBy;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
+    @CreationTimestamp
     @Column(name = "created_at")
-    private LocalTime createdAt;
+    private LocalDateTime createdAt;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
+    @UpdateTimestamp
     @Column(name = "updated_at")
-    private LocalTime updatedAt;
+    private LocalDateTime updatedAt;
 
     @Column(name = "scoring_rules", nullable = false)
     @JdbcTypeCode(SqlTypes.JSON)

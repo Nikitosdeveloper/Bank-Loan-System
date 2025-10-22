@@ -6,9 +6,11 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Getter
@@ -38,8 +40,9 @@ public class DocumentDB {
     private String originalName;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
+    @CreationTimestamp
     @Column(name = "uploaded_at")
-    private LocalTime uploadedAt;
+    private LocalDateTime uploadedAt;
 
     @ColumnDefault("'pending'")
     @Column(name = "verification_status", length = 20)
