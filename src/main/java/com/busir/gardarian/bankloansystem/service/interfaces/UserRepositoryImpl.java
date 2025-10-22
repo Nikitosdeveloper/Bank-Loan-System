@@ -1,8 +1,13 @@
 package com.busir.gardarian.bankloansystem.service.interfaces;
 
 import com.busir.gardarian.bankloansystem.entity.User;
+import com.busir.gardarian.bankloansystem.entity.enums.Role;
+
+import java.util.List;
 
 public interface UserRepositoryImpl {
+    public List<User> findAll();
+    public List<User> findByRole(Role role);
     public User findById(Long id);
     public User findByUsername(String username);
     public User findByEmail(String email);

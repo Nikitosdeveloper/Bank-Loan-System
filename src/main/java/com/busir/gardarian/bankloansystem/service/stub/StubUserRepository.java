@@ -8,10 +8,83 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.List;
 
 @Repository
 @Profile("devService")
 public class StubUserRepository implements UserRepositoryImpl {
+
+    @Override
+    public List<User> findAll() {
+        return List.of(new User(
+                10L,
+                "EMAIL@gmail.com",
+                "passwordPassword2",
+                Role.CLIENT,
+                "testName1",
+                "+7885642155",
+                Timestamp.from(Instant.now()),
+                Timestamp.from(Instant.now()),
+                true
+        ), new User(
+                3L,
+                "testemail@gmail.com",
+                "passwordPassword",
+                Role.CLIENT,
+                "testName",
+                "+7885642134",
+                Timestamp.from(Instant.now()),
+                Timestamp.from(Instant.now()),
+                true
+        ), new User(
+                5L,
+                "testemail1@gmail.com",
+                "passwordPassword1",
+                Role.CLIENT,
+                "NAME",
+                "+7885656134",
+                Timestamp.from(Instant.now()),
+                Timestamp.from(Instant.now()),
+                true
+        ));
+    }
+
+    @Override
+    public List<User> findByRole(Role role) {
+        return List.of(new User(
+                10L,
+                "EMAIL@gmail.com",
+                "passwordPassword2",
+                Role.CLIENT,
+                "testName1",
+                "+7885642155",
+                Timestamp.from(Instant.now()),
+                Timestamp.from(Instant.now()),
+                true
+        ), new User(
+                3L,
+                "testemail@gmail.com",
+                "passwordPassword",
+                Role.CLIENT,
+                "testName",
+                "+7885642134",
+                Timestamp.from(Instant.now()),
+                Timestamp.from(Instant.now()),
+                true
+        ), new User(
+                5L,
+                "testemail1@gmail.com",
+                "passwordPassword1",
+                Role.CLIENT,
+                "NAME",
+                "+7885656134",
+                Timestamp.from(Instant.now()),
+                Timestamp.from(Instant.now()),
+                true
+        ));
+
+
+    }
 
     @Override
     public User findById(Long id) {
