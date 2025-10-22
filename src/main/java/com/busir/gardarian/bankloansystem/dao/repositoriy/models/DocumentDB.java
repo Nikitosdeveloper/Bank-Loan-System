@@ -1,5 +1,7 @@
 package com.busir.gardarian.bankloansystem.dao.repositoriy.models;
 
+import com.busir.gardarian.bankloansystem.entity.enums.DocumentType;
+import com.busir.gardarian.bankloansystem.entity.enums.DocumentVerificationStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,7 +28,8 @@ public class DocumentDB {
     private LoanApplicationDB application;
 
     @Column(name = "document_type", length = 50)
-    private String documentType;
+    @Enumerated(EnumType.STRING)
+    private DocumentType documentType;
 
     @Column(name = "file_path", nullable = false, length = 500)
     private String filePath;
@@ -40,7 +43,8 @@ public class DocumentDB {
 
     @ColumnDefault("'pending'")
     @Column(name = "verification_status", length = 20)
-    private String verificationStatus;
+    @Enumerated(EnumType.STRING)
+    private DocumentVerificationStatus verificationStatus;
 
     @Column(name = "verification_notes", length = Integer.MAX_VALUE)
     private String verificationNotes;

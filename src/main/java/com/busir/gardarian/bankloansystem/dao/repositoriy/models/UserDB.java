@@ -1,5 +1,6 @@
 package com.busir.gardarian.bankloansystem.dao.repositoriy.models;
 
+import com.busir.gardarian.bankloansystem.entity.enums.Role;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,8 +26,9 @@ public class UserDB {
     @Column(name = "password_hash", nullable = false)
     private String passwordHash;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "role", length = 20)
-    private String role;
+    private Role role;
 
     @Column(name = "full_name", nullable = false)
     private String fullName;

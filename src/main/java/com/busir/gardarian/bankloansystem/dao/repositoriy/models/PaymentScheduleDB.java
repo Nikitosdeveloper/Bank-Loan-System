@@ -1,5 +1,6 @@
 package com.busir.gardarian.bankloansystem.dao.repositoriy.models;
 
+import com.busir.gardarian.bankloansystem.entity.enums.PaymentStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -42,6 +43,7 @@ public class PaymentScheduleDB {
 
     @ColumnDefault("'pending'")
     @Column(name = "status", length = 20)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus status;
 
 }

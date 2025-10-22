@@ -1,5 +1,7 @@
 package com.busir.gardarian.bankloansystem.dao.repositoriy.models;
 
+import com.busir.gardarian.bankloansystem.entity.enums.LoanApplicationFinalDecision;
+import com.busir.gardarian.bankloansystem.entity.enums.LoanApplicationStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -48,7 +50,8 @@ public class LoanApplicationDB {
 
     @ColumnDefault("'pending'")
     @Column(name = "status", length = 20)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private LoanApplicationStatus status;
 
     @Column(name = "scoring_score")
     private Integer scoringScore;
@@ -58,7 +61,8 @@ public class LoanApplicationDB {
 
     @ColumnDefault("'pending'")
     @Column(name = "final_decision", length = 20)
-    private String finalDecision;
+    @Enumerated(EnumType.STRING)
+    private LoanApplicationFinalDecision finalDecision;
 
     @Column(name = "\"decision_comment \"", length = Integer.MAX_VALUE)
     private String decisionComment;
