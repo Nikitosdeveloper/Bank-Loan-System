@@ -79,7 +79,7 @@ public class DocumentService {
             Files.copy(document.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
             Document documentInBD = new Document(
-                    0L,
+                    null,
                     applicationId,
                     type,
                     fileName,
