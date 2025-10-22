@@ -6,6 +6,7 @@ import com.busir.gardarian.bankloansystem.service.dto.UserProfileDto;
 import com.busir.gardarian.bankloansystem.service.dto.UserRegistrationForm;
 import com.busir.gardarian.bankloansystem.service.exception.EmailAlreadyExistException;
 import com.busir.gardarian.bankloansystem.service.exception.IncorrectPasswordException;
+import com.busir.gardarian.bankloansystem.service.exception.UserIsNotActive;
 import com.busir.gardarian.bankloansystem.service.exception.UserNotFoundException;
 import com.busir.gardarian.bankloansystem.service.interfaces.PasswordHasherImpl;
 import com.busir.gardarian.bankloansystem.service.interfaces.UserRepositoryImpl;
@@ -27,6 +28,9 @@ public class AccountService {
             throw new UserNotFoundException("User not found");
         }
         if (passwordHasher.verifyPassword(user.getPasswordHash(), password)) {
+            if (!user.getIsActive()){
+                throw new UserIsNotActive("User is not active");
+            }
             return UserProfileDto.fromUser(user);
         }else{
             throw new IncorrectPasswordException("Incorrect password");
