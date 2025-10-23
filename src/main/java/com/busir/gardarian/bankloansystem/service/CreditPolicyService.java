@@ -46,7 +46,7 @@ public class CreditPolicyService {
         creditPolicies.setMaxTerm(creditPolicyForm.getMaxTerm());
         creditPolicies.setMinAge(creditPolicyForm.getMinAge());
         creditPolicies.setMaxAge(creditPolicyForm.getMaxAge());
-        creditPolicies.setMin_income(creditPolicyForm.getMin_income());
+        creditPolicies.setMinIncome(creditPolicyForm.getMin_income());
         creditPolicies.setBaseInterestRate(creditPolicyForm.getBaseInterestRate());
         creditPolicies.setCreatedById(creditPolicyForm.getAdminId());
         creditPolicies.setScoringRules(creditPolicyForm.getScoringRules());
@@ -127,7 +127,7 @@ public class CreditPolicyService {
         creditPolicies.setMaxTerm(creditPolicyForm.getMaxTerm());
         creditPolicies.setMinAge(creditPolicyForm.getMinAge());
         creditPolicies.setMaxAge(creditPolicyForm.getMaxAge());
-        creditPolicies.setMin_income(creditPolicyForm.getMin_income());
+        creditPolicies.setMinIncome(creditPolicyForm.getMin_income());
         creditPolicies.setBaseInterestRate(creditPolicyForm.getBaseInterestRate());
 
         creditPolicies.setCreatedById(creditPolicyForm.getAdminId());
