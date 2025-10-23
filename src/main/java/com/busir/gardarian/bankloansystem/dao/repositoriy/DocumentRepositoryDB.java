@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -21,29 +22,39 @@ public class DocumentRepositoryDB implements DocumentRepositoryImp {
     private final DocumentRepositoryJPA repository;
     private final DocumentMapper mapper;
 
+    @Transactional
     @Override
     public List<Document> findAll() {
-        return mapper.toEntity(repository.findAll());
+        List<Document> list = mapper.toEntity(repository.findAll());
+        return list;
     }
 
+    @Transactional
     @Override
     public List<Document> findByLoanApplicationId(Long id) {
-        return mapper.toEntity(repository.findByApplicationId(id));
+        List<Document> list =  mapper.toEntity(repository.findByApplicationId(id));
+        return list;
     }
 
+    @Transactional
     @Override
     public List<Document> findByDocumentType(DocumentType type) {
-        return mapper.toEntity(repository.findByDocumentType(type));
+        List<Document> list =  mapper.toEntity(repository.findByDocumentType(type));
+        return list;
     }
 
+    @Transactional
     @Override
     public List<Document> findByDocumentVerificationStatus(DocumentVerificationStatus verificationStatus) {
-        return mapper.toEntity(repository.findByVerificationStatus(verificationStatus));
+        List<Document> list =  mapper.toEntity(repository.findByVerificationStatus(verificationStatus));
+        return list;
     }
 
+    @Transactional
     @Override
     public Document findById(Long id) {
-        return mapper.toEntity(repository.findById(id).orElse(null));
+        Document obj = mapper.toEntity(repository.findById(id).orElse(null));
+        return obj;
     }
 
     @Override

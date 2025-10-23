@@ -4,6 +4,7 @@ import com.busir.gardarian.bankloansystem.dao.repositoriy.interfaces.LoanApplica
 import com.busir.gardarian.bankloansystem.dao.repositoriy.mapping.LoanApplicationMapper;
 import com.busir.gardarian.bankloansystem.entity.LoanApplication;
 import com.busir.gardarian.bankloansystem.service.interfaces.LoanApplicationRepositoryImpl;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
@@ -19,29 +20,39 @@ public class LoanApplicationRepositoryDB implements LoanApplicationRepositoryImp
     private final LoanApplicationRepositoryJPA repository;
     private final LoanApplicationMapper mapper;
 
+    @Transactional
     @Override
     public List<LoanApplication> getAll() {
-        return mapper.toEntity(repository.findAll());
+        List<LoanApplication> list = mapper.toEntity(repository.findAll());
+        return list;
     }
 
+    @Transactional
     @Override
     public LoanApplication getById(Long id) {
-        return mapper.toEntity(repository.findById(id).orElse(null));
+        LoanApplication obj = mapper.toEntity(repository.findById(id).orElse(null));
+        return obj;
     }
 
+    @Transactional
     @Override
     public List<LoanApplication> getByManagerId(Long id) {
-        return mapper.toEntity(repository.findByManagerId(Math.toIntExact(id)));
+        List<LoanApplication> list = mapper.toEntity(repository.findByManagerId(Math.toIntExact(id)));
+        return list;
     }
 
+    @Transactional
     @Override
     public List<LoanApplication> getFreeLoanApplications() {
-        return mapper.toEntity(repository.findByManagerIsNull());
+        List<LoanApplication> list = mapper.toEntity(repository.findByManagerIsNull());
+        return list;
     }
 
+    @Transactional
     @Override
     public List<LoanApplication> getByUserId(Long userId) {
-        return mapper.toEntity(repository.findByUserId(userId));
+        List<LoanApplication> list = mapper.toEntity(repository.findByUserId(userId));
+        return list;
     }
 
     @Override
