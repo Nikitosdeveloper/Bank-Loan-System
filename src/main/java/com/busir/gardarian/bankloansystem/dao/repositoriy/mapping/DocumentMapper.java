@@ -30,6 +30,9 @@ public class DocumentMapper {
     }
 
     public Document toEntity(DocumentDB documentDB) {
+        if(documentDB == null)
+            return null;
+
         Document document = new Document();
 
         if (documentDB.getId() != null)
@@ -46,6 +49,9 @@ public class DocumentMapper {
     }
 
     public DocumentDB toDB(Document document) {
+        if(document == null)
+            return null;
+
         DocumentDB documentDB = new DocumentDB();
 
         if (document.getId() != null)

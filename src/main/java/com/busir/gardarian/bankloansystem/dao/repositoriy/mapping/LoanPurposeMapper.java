@@ -22,6 +22,10 @@ public class LoanPurposeMapper {
     }
 
     public LoanPurpose toEntity(LoanPurposeDB loanPurposeDB) {
+        if (loanPurposeDB == null) {
+            return null;
+        }
+
         LoanPurpose loanPurpose = new LoanPurpose();
 
         if(loanPurposeDB.getId() != null)
@@ -36,6 +40,9 @@ public class LoanPurposeMapper {
     }
 
     public LoanPurposeDB toDB(LoanPurpose loanPurpose) {
+        if(loanPurpose == null)
+            return null;
+
         LoanPurposeDB loanPurposeDB = new LoanPurposeDB();
 
         if(loanPurpose.getId() != null)

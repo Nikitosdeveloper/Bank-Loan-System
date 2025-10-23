@@ -29,6 +29,9 @@ public class LoanApplicationMapper {
     }
 
     public LoanApplication toEntity(LoanApplicationDB loanApplicationDB) {
+        if(loanApplicationDB == null)
+            return null;
+
         LoanApplication loanApplication = new LoanApplication();
 
         if(loanApplicationDB.getId() != null)
@@ -55,6 +58,9 @@ public class LoanApplicationMapper {
     }
 
     public LoanApplicationDB toDB(LoanApplication loanApplication) {
+        if(loanApplication == null)
+            return null;
+
         LoanApplicationDB loanApplicationDB = new LoanApplicationDB();
 
         if(loanApplication.getId() != null)
