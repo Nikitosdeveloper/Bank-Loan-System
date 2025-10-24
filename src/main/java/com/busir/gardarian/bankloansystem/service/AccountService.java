@@ -27,7 +27,7 @@ public class AccountService {
         if (user == null) {
             throw new UserNotFoundException("User not found");
         }
-        if (passwordHasher.verifyPassword(user.getPasswordHash(), password)) {
+        if (passwordHasher.verifyPassword(password, user.getPasswordHash())) {
             if (!user.getIsActive()){
                 throw new UserIsNotActive("User is not active");
             }
