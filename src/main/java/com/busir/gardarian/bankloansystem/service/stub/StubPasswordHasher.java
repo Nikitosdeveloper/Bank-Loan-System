@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 @Service
-@Profile({"devService", "devDAO"})
+@Profile({"devService"})
 public class StubPasswordHasher implements PasswordHasherImpl {
     @Override
     public String hashPassword(String password) {
