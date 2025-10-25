@@ -1,7 +1,6 @@
-package com.busir.gardarian.bankloansystem.dao.infrostructure.security;
+package com.busir.gardarian.bankloansystem.dao.infrostructure.security.services;
 
 import com.busir.gardarian.bankloansystem.entity.User;
-import com.busir.gardarian.bankloansystem.service.dto.UserRegistrationForm;
 import com.busir.gardarian.bankloansystem.service.interfaces.UserRepositoryImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,7 +26,11 @@ public class MyUserDetailsService implements UserDetailsService {
                 new SimpleGrantedAuthority("ROLE_" + user.getRole().name())
         );
 
-        return new org.springframework.security.core.userdetails.User(
-                user.getEmail(), user.getPasswordHash(), authorities);
+        return org.springframework.security.core.userdetails.User.builder()
+                .username(user.getEmail())
+                .password(user.getPasswordHash())
+                .authorities(authorities)
+                .disabled(!user.getIsActive())
+                .build();
     }
 }

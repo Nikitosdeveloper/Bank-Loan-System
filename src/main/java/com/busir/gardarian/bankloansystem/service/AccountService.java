@@ -22,19 +22,14 @@ public class AccountService {
     private final UserRepositoryImpl userRepository;
     private final PasswordHasherImpl passwordHasher;
 
-    public UserProfileDto login(String email, String password) {
+    public UserProfileDto validateAndGetUser(String email) {
         User user = userRepository.findByEmail(email);
         if (user == null) {
             throw new UserNotFoundException("User not found");
+        }else if (!user.getIsActive()){
+            throw new UserIsNotActive("User is not active");
         }
-        if (passwordHasher.verifyPassword(password, user.getPasswordHash())) {
-            if (!user.getIsActive()){
-                throw new UserIsNotActive("User is not active");
-            }
-            return UserProfileDto.fromUser(user);
-        }else{
-            throw new IncorrectPasswordException("Incorrect password");
-        }
+        return UserProfileDto.fromUser(user);
     }
 
     public UserProfileDto register(UserRegistrationForm form) {

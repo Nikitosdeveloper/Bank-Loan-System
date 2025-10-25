@@ -1,4 +1,4 @@
-package com.busir.gardarian.bankloansystem.dao.infrostructure.security;
+package com.busir.gardarian.bankloansystem.dao.infrostructure.security.services;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

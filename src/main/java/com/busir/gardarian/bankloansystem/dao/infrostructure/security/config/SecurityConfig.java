@@ -1,6 +1,5 @@
 package com.busir.gardarian.bankloansystem.dao.infrostructure.security.config;
 
-import com.busir.gardarian.bankloansystem.dao.infrostructure.security.AuthService;
 import com.busir.gardarian.bankloansystem.dao.infrostructure.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

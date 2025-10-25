@@ -5,14 +5,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-@Profile("devDAO1")
+@Profile("devDAO")
 @Primary
 public class BCryptPasswordHasher implements PasswordHasherImpl {
-    private final BCryptPasswordEncoder encoder;
+    private final PasswordEncoder encoder;
 
     @Override
     public String hashPassword(String password) {

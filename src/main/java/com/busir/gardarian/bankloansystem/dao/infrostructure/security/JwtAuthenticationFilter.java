@@ -1,6 +1,7 @@
 package com.busir.gardarian.bankloansystem.dao.infrostructure.security;
 
-import com.busir.gardarian.bankloansystem.dao.infrostructure.security.JwtService;
+import com.busir.gardarian.bankloansystem.dao.infrostructure.security.services.JwtService;
+import com.busir.gardarian.bankloansystem.dao.infrostructure.security.services.MyUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
