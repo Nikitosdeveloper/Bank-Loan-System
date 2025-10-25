@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-@Profile("devDAO")
+@Profile("devDAO1")
 @Primary
 public class BCryptPasswordHasher implements PasswordHasherImpl {
     private final BCryptPasswordEncoder encoder;
