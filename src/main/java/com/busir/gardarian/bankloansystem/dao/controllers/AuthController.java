@@ -1,8 +1,10 @@
 package com.busir.gardarian.bankloansystem.dao.controllers;
 
 import com.busir.gardarian.bankloansystem.dao.controllers.dto.AuthRequest;
+import com.busir.gardarian.bankloansystem.dao.controllers.dto.RefreshRequest;
 import com.busir.gardarian.bankloansystem.dao.controllers.dto.RegisterRequest;
 import com.busir.gardarian.bankloansystem.dao.controllers.dto.AuthResponce;
+import com.busir.gardarian.bankloansystem.dao.infrostructure.security.dto.JwtAuthenticationDto;
 import com.busir.gardarian.bankloansystem.dao.infrostructure.security.services.JwtService;
 import com.busir.gardarian.bankloansystem.dao.infrostructure.security.services.MyUserDetailsService;
 import com.busir.gardarian.bankloansystem.service.AccountService;
@@ -41,9 +43,9 @@ public class AuthController {
     public ResponseEntity<AuthResponce> register(@RequestBody RegisterRequest registerRequest) {
         UserProfileDto userDto = accountService.register(RegisterRequest.toForm(registerRequest));
 
-        String token = generateToken(registerRequest.getEmail());
+        JwtAuthenticationDto dto = generateToken(registerRequest.getEmail());
 
-        return ResponseEntity.ok(new AuthResponce(token));
+        return ResponseEntity.ok(AuthResponce.from(dto));
     }
 
     @PostMapping("login")
@@ -55,17 +57,28 @@ public class AuthController {
 
             accountService.validateAndGetUser(request.getEmail());
 
-            String token = generateToken(request.getEmail());
+            JwtAuthenticationDto dto = generateToken(request.getEmail());
 
-            return ResponseEntity.ok(new AuthResponce(token));
+            return ResponseEntity.ok(AuthResponce.from(dto));
         }catch (BadCredentialsException e) {
             throw new IncorrectPasswordException("Invalid email or password");
         }
     }
 
-    private String generateToken(String email) {
+    @PostMapping("refresh")
+    public JwtAuthenticationDto refresh(@RequestBody RefreshRequest request) {
+        return refreshToken(request.getRefreshToken());
+    }
+
+    private JwtAuthenticationDto refreshToken(String token) {
+        UserDetails user = userDetailsService.loadUserByUsername(jwtService.extractUsername(token));
+
+        return jwtService.refreshAuthToken(user, token);
+    }
+
+    private JwtAuthenticationDto generateToken(String email) {
         UserDetails user = userDetailsService.loadUserByUsername(email);
 
-        return jwtService.generateToken(user);
+        return jwtService.generateAuthToken(user);
     }
 }

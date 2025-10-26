@@ -1,5 +1,6 @@
 package com.busir.gardarian.bankloansystem.dao.infrostructure.security.services;
 
+import com.busir.gardarian.bankloansystem.dao.infrostructure.security.dto.JwtAuthenticationDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -19,21 +20,49 @@ public class JwtService {
     @Value("${jwt.secret}")
     private String secret;
 
-    @Value("${jwt.expiration}")
-    private Long expiration;
+    @Value("${jwt.expiration.access}")
+    private Long expirationAccess;
+
+    @Value("${jwt.expiration.refresh}")
+    private Long expirationRefresh;
 
     private SecretKey getSigningKey() {
         return Keys.hmacShaKeyFor(secret.getBytes());
     }
 
-    public String generateToken(UserDetails userDetails) {
+    public JwtAuthenticationDto generateAuthToken(UserDetails userDetails) {
+        JwtAuthenticationDto jwtDto = new JwtAuthenticationDto();
+        jwtDto.setAccessToken(generateAccessToken(userDetails));
+        jwtDto.setRefreshToken(generateRefreshToken(userDetails));
+
+        return jwtDto;
+    }
+
+    public JwtAuthenticationDto refreshAuthToken(UserDetails userDetails, String refreshToken) {
+        JwtAuthenticationDto jwtDto = new JwtAuthenticationDto();
+        jwtDto.setAccessToken(generateAccessToken(userDetails));
+        jwtDto.setRefreshToken(refreshToken);
+        return jwtDto;
+    }
+
+    private String generateRefreshToken(UserDetails userDetails){
+        return Jwts.builder()
+                .subject(userDetails.getUsername())
+                .issuedAt(new Date())
+                .expiration(new Date(System.currentTimeMillis() + expirationRefresh))
+                .signWith(getSigningKey())
+                .compact();
+
+    }
+
+    private String generateAccessToken(UserDetails userDetails) {
         return Jwts.builder()
                 .subject(userDetails.getUsername())
                 .claim("roles", userDetails.getAuthorities().stream()
                         .map(GrantedAuthority::getAuthority)
                         .collect(Collectors.toList()))
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + expiration))
+                .expiration(new Date(System.currentTimeMillis() + expirationAccess))
                 .signWith(getSigningKey())
                 .compact();
     }
