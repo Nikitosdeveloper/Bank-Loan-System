@@ -28,17 +28,6 @@ public class AuthController {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    @GetMapping("/all")
-    public ResponseEntity<String> test(){
-        return ResponseEntity.ok("all");
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/magnus")
-    public ResponseEntity<String> test1(){
-        return ResponseEntity.ok("auth");
-    }
-
     @PostMapping("register")
     public ResponseEntity<AuthResponce> register(@RequestBody RegisterRequest registerRequest) {
         UserProfileDto userDto = accountService.register(RegisterRequest.toForm(registerRequest));
