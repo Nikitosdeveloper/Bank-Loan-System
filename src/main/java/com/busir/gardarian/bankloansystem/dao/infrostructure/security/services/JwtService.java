@@ -48,6 +48,9 @@ public class JwtService {
     private String generateRefreshToken(UserDetails userDetails){
         return Jwts.builder()
                 .subject(userDetails.getUsername())
+                .claim("roles", userDetails.getAuthorities().stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .collect(Collectors.toList()))
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + expirationRefresh))
                 .signWith(getSigningKey())
