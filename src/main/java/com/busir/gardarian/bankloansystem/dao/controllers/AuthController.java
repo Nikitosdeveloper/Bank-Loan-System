@@ -17,7 +17,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
+
+import javax.swing.text.html.parser.Entity;
 
 @RestController
 @RequiredArgsConstructor
@@ -49,7 +52,7 @@ public class AuthController {
             JwtAuthenticationDto dto = generateToken(request.getEmail());
 
             return ResponseEntity.ok(AuthResponce.from(dto));
-        }catch (BadCredentialsException e) {
+        }catch (BadCredentialsException | UsernameNotFoundException e) {
             throw new IncorrectPasswordException("Invalid email or password");
         }
     }

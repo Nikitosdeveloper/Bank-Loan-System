@@ -2,6 +2,7 @@ package com.busir.gardarian.bankloansystem.dao.infrostructure.security.services;
 
 import com.busir.gardarian.bankloansystem.dao.infrostructure.security.dto.JwtAuthenticationDto;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -82,7 +83,10 @@ public class JwtService {
         try {
             parseToken(token);
             return true;
-        } catch (Exception e) {
+        }catch (ExpiredJwtException e){
+            throw e;
+        }
+        catch (Exception e) {
             return false;
         }
     }
