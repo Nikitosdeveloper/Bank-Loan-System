@@ -1,13 +1,16 @@
 package com.busir.gardarian.bankloansystem.service;
 
+import com.busir.gardarian.bankloansystem.entity.ClientAdditionalInfo;
 import com.busir.gardarian.bankloansystem.entity.User;
 import com.busir.gardarian.bankloansystem.entity.enums.Role;
+import com.busir.gardarian.bankloansystem.service.dto.ClientAdditionalInfoForm;
 import com.busir.gardarian.bankloansystem.service.dto.UserProfileDto;
 import com.busir.gardarian.bankloansystem.service.dto.UserRegistrationForm;
 import com.busir.gardarian.bankloansystem.service.exception.EmailAlreadyExistException;
 import com.busir.gardarian.bankloansystem.service.exception.IncorrectPasswordException;
 import com.busir.gardarian.bankloansystem.service.exception.UserIsNotActive;
 import com.busir.gardarian.bankloansystem.service.exception.UserNotFoundException;
+import com.busir.gardarian.bankloansystem.service.interfaces.ClientAdditionalInfoRepositoryImpl;
 import com.busir.gardarian.bankloansystem.service.interfaces.PasswordHasherImpl;
 import com.busir.gardarian.bankloansystem.service.interfaces.UserRepositoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,7 @@ import java.time.Instant;
 public class AccountService {
 
     private final UserRepositoryImpl userRepository;
+    private final ClientAdditionalInfoRepositoryImpl clientAdditionalInfoRepository;
     private final PasswordHasherImpl passwordHasher;
 
     public UserProfileDto validateAndGetUser(String email) {
@@ -55,9 +59,23 @@ public class AccountService {
         return UserProfileDto.fromUser(user);
     }
 
+    public Long addAdditionalInfo(ClientAdditionalInfoForm form) {
+        User user = userRepository.findById(form.getUserId());
+        if (user == null) {
+            throw new UserNotFoundException("User not found");
+        }
+
+        ClientAdditionalInfo clientAdditionalInfo = ClientAdditionalInfoForm.toEntity(form);
+
+        clientAdditionalInfo = clientAdditionalInfoRepository.saveClientAdditionalInfo(clientAdditionalInfo);
+
+        return clientAdditionalInfo.getId();
+    }
+
     @Autowired
-    public AccountService(UserRepositoryImpl userRepository, PasswordHasherImpl passwordHasher) {
+    public AccountService(UserRepositoryImpl userRepository, ClientAdditionalInfoRepositoryImpl clientAdditionalInfoRepository, PasswordHasherImpl passwordHasher) {
         this.userRepository = userRepository;
+        this.clientAdditionalInfoRepository = clientAdditionalInfoRepository;
         this.passwordHasher = passwordHasher;
     }
 }
