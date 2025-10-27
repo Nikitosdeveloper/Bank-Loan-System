@@ -1,9 +1,6 @@
 package com.busir.gardarian.bankloansystem.dao.controllers.handlers;
 
-import com.busir.gardarian.bankloansystem.service.exception.EmailAlreadyExistException;
-import com.busir.gardarian.bankloansystem.service.exception.IncorrectPasswordException;
-import com.busir.gardarian.bankloansystem.service.exception.UserIsNotActive;
-import com.busir.gardarian.bankloansystem.service.exception.UserNotFoundException;
+import com.busir.gardarian.bankloansystem.service.exception.*;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;
 import org.springframework.http.HttpStatus;
@@ -41,6 +38,19 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleUserIsNotActive(final Exception ex) {
         return ResponseEntity
                 .status(HttpStatus.FORBIDDEN)
+                .body(ex.getMessage());
+    }
+
+    @ExceptionHandler(value = LoanPurposeNotFound.class)
+    public ResponseEntity<String> handleLoanPurposeNotFound(final Exception ex) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ex.getMessage());
+    }
+
+    @ExceptionHandler(value = ClientAdditionalInfoNotFoundException.class)
+    public ResponseEntity<String> handleClientAdditionalInfoNotFoundException(final Exception ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ex.getMessage());
     }
 
