@@ -1,11 +1,13 @@
 package com.busir.gardarian.bankloansystem.dao.infrostructure.security.services;
 
 import com.busir.gardarian.bankloansystem.dao.infrostructure.security.dto.JwtAuthenticationDto;
+import com.busir.gardarian.bankloansystem.dao.infrostructure.security.dto.TokenType;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -40,15 +42,20 @@ public class JwtService {
     }
 
     public JwtAuthenticationDto refreshAuthToken(UserDetails userDetails, String refreshToken) {
-        JwtAuthenticationDto jwtDto = new JwtAuthenticationDto();
-        jwtDto.setAccessToken(generateAccessToken(userDetails));
-        jwtDto.setRefreshToken(refreshToken);
-        return jwtDto;
+        if(extractTokenType(refreshToken).equals(TokenType.REFRESH_TOKEN)) {
+            JwtAuthenticationDto jwtDto = new JwtAuthenticationDto();
+            jwtDto.setAccessToken(generateAccessToken(userDetails));
+            jwtDto.setRefreshToken(refreshToken);
+            return jwtDto;
+        }else {
+            throw new BadCredentialsException("Invalid refresh token");
+        }
     }
 
     private String generateRefreshToken(UserDetails userDetails){
         return Jwts.builder()
                 .subject(userDetails.getUsername())
+                .claim("token_type", TokenType.REFRESH_TOKEN.name())
                 .claim("roles", userDetails.getAuthorities().stream()
                         .map(GrantedAuthority::getAuthority)
                         .collect(Collectors.toList()))
@@ -62,6 +69,7 @@ public class JwtService {
     private String generateAccessToken(UserDetails userDetails) {
         return Jwts.builder()
                 .subject(userDetails.getUsername())
+                .claim("token_type", TokenType.ACCESS_TOKEN.name())
                 .claim("roles", userDetails.getAuthorities().stream()
                         .map(GrantedAuthority::getAuthority)
                         .collect(Collectors.toList()))
@@ -79,10 +87,14 @@ public class JwtService {
         return parseToken(token).get("roles", List.class);
     }
 
-    public boolean validateToken(String token) {
+    public TokenType extractTokenType(String token) {
+        return TokenType.fromString(parseToken(token).get("token_type", String.class));
+    }
+
+    public boolean validateAccessToken(String token) {
         try {
             parseToken(token);
-            return true;
+            return TokenType.ACCESS_TOKEN.equals(extractTokenType(token));
         }catch (ExpiredJwtException e){
             throw e;
         }

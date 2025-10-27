@@ -39,7 +39,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String token = header.substring(7);
 
             try {
-                if (jwtUtil.validateToken(token)) {
+                if (jwtUtil.validateAccessToken(token)) {
                     String username = jwtUtil.extractUsername(token);
                     List<String> roles = jwtUtil.extractRoles(token);
 
