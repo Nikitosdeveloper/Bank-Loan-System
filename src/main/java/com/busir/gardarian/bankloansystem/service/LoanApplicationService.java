@@ -5,13 +5,11 @@ import com.busir.gardarian.bankloansystem.entity.LoanApplication;
 import com.busir.gardarian.bankloansystem.entity.enums.LoanApplicationStatus;
 import com.busir.gardarian.bankloansystem.service.dto.LoanApplicationForm;
 import com.busir.gardarian.bankloansystem.service.dto.LoanApplicationResult;
+import com.busir.gardarian.bankloansystem.service.exception.ClientAdditionalInfoNotFoundException;
 import com.busir.gardarian.bankloansystem.service.exception.LoanPurposeNotFound;
 import com.busir.gardarian.bankloansystem.service.exception.NoActiveCreditPolicy;
 import com.busir.gardarian.bankloansystem.service.exception.UserNotFoundException;
-import com.busir.gardarian.bankloansystem.service.interfaces.CreditPolicyRepositoryImpl;
-import com.busir.gardarian.bankloansystem.service.interfaces.LoanApplicationRepositoryImpl;
-import com.busir.gardarian.bankloansystem.service.interfaces.LoanPurposeRepositoryImpl;
-import com.busir.gardarian.bankloansystem.service.interfaces.UserRepositoryImpl;
+import com.busir.gardarian.bankloansystem.service.interfaces.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,6 +26,7 @@ public class LoanApplicationService {
     private final CreditPolicyRepositoryImpl creditPolicyRepository;
     private final ScoreCalculatingService scoreCalculatingService;
     private final LoanApplicationRepositoryImpl loanApplicationRepository;
+    private final ClientAdditionalInfoRepositoryImpl clientAdditionalInfoRepository;
 
     public Long submitLoanApplication(LoanApplicationForm loanApplicationForm) {
 
@@ -38,6 +37,9 @@ public class LoanApplicationService {
         }
         if (loanPurposeRepository.findById(loanApplicationForm.getPurposeId()) == null) {
             throw new LoanPurposeNotFound("Purpose for loan not found");
+        }
+        if(clientAdditionalInfoRepository.getClientAdditionalInfoByUserId(loanApplicationForm.getUserId()) == null){
+            throw new ClientAdditionalInfoNotFoundException("Client additional info not found");
         }
 
         CreditPolicies creditPolicies = creditPolicyRepository.getCreditActualPolicies();
