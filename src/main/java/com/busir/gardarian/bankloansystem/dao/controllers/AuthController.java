@@ -10,6 +10,7 @@ import com.busir.gardarian.bankloansystem.dao.infrostructure.security.services.M
 import com.busir.gardarian.bankloansystem.service.AccountService;
 import com.busir.gardarian.bankloansystem.service.dto.UserProfileDto;
 import com.busir.gardarian.bankloansystem.service.exception.IncorrectPasswordException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +34,7 @@ public class AuthController {
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     @PostMapping("register")
-    public ResponseEntity<AuthResponce> register(@RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity<AuthResponce> register(@RequestBody @Valid RegisterRequest registerRequest) {
         logger.info("REGISTER attempt for email: {}", registerRequest.getEmail());
 
         try {
@@ -55,7 +56,7 @@ public class AuthController {
     }
 
     @PostMapping("login")
-    public ResponseEntity<AuthResponce> login(@RequestBody AuthRequest request) {
+    public ResponseEntity<AuthResponce> login(@RequestBody @Valid AuthRequest request) {
         logger.info("LOGIN attempt for email: {}", request.getEmail());
         try {
             logger.debug("Attempting authentication for: {}", request.getEmail());
@@ -81,7 +82,7 @@ public class AuthController {
     }
 
     @PostMapping("refresh")
-    public JwtAuthenticationDto refresh(@RequestBody RefreshRequest request) {
+    public JwtAuthenticationDto refresh(@RequestBody @Valid RefreshRequest request) {
         logger.debug("REFRESH token request received");
         try {
             JwtAuthenticationDto result = refreshToken(request.getRefreshToken());

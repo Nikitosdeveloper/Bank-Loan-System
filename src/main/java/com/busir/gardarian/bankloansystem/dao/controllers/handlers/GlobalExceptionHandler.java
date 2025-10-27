@@ -4,6 +4,8 @@ import com.busir.gardarian.bankloansystem.service.exception.EmailAlreadyExistExc
 import com.busir.gardarian.bankloansystem.service.exception.IncorrectPasswordException;
 import com.busir.gardarian.bankloansystem.service.exception.UserIsNotActive;
 import com.busir.gardarian.bankloansystem.service.exception.UserNotFoundException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -42,4 +44,15 @@ public class GlobalExceptionHandler {
                 .body(ex.getMessage());
     }
 
+    @ExceptionHandler(value = MalformedJwtException.class)
+    public ResponseEntity<String> handleMalformedJwtException(final Exception ex) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ex.getMessage());
+    }
+
+    @ExceptionHandler(value = SignatureException.class)
+    public ResponseEntity<String> handleSignatureException(final Exception ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token");
+    }
 }
