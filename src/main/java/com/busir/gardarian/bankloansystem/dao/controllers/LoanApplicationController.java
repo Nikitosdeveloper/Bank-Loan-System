@@ -6,11 +6,14 @@ import com.busir.gardarian.bankloansystem.dao.repositoriy.mapping.LoanApplicatio
 import com.busir.gardarian.bankloansystem.service.AccountService;
 import com.busir.gardarian.bankloansystem.service.LoanApplicationService;
 import com.busir.gardarian.bankloansystem.service.dto.LoanApplicationForm;
+import com.busir.gardarian.bankloansystem.service.dto.LoanApplicationResult;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/client/loan-application")
@@ -37,5 +40,18 @@ public class LoanApplicationController {
                 .from(loanApplicationService.getLoanApplicationStatus(id));
 
         return ResponseEntity.ok(responce);
+    }
+
+    @GetMapping("history")
+    public ResponseEntity<List<LoanApplicationStatusResponce>> getHistory(Authentication authentication) {
+        Long userId = accountService.validateAndGetUser(authentication.getName()).getId();
+
+        List<LoanApplicationResult> statuses = loanApplicationService.getHistoryLoanApplication(userId);
+
+        List<LoanApplicationStatusResponce> responses = statuses.stream()
+                .map(LoanApplicationStatusResponce::from)
+                .toList();
+
+        return ResponseEntity.ok(responses);
     }
 }
