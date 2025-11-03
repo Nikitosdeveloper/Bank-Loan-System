@@ -71,4 +71,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleException(final Exception ex) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Refresh token is expired");
     }
+
+    @ExceptionHandler(value = LoanApplicationNotFoundException.class)
+    public ResponseEntity<String> handleLoanApplicationNotFoundException(final Exception ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
 }

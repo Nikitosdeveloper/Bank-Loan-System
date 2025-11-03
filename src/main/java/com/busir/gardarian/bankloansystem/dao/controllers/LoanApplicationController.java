@@ -1,5 +1,6 @@
 package com.busir.gardarian.bankloansystem.dao.controllers;
 
+import com.busir.gardarian.bankloansystem.dao.controllers.dto.LoanApplicationStatusResponce;
 import com.busir.gardarian.bankloansystem.dao.controllers.dto.LoanApplicationSubmitRequest;
 import com.busir.gardarian.bankloansystem.dao.repositoriy.mapping.LoanApplicationMapper;
 import com.busir.gardarian.bankloansystem.service.AccountService;
@@ -9,10 +10,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/client/loan-application")
@@ -31,5 +29,13 @@ public class LoanApplicationController {
         loanApplicationService.submitLoanApplication(form);
 
         return ResponseEntity.ok(userId);
+    }
+
+    @GetMapping("status/{id}")
+    public ResponseEntity<LoanApplicationStatusResponce> getStatus(@PathVariable Long id) {
+        LoanApplicationStatusResponce responce = LoanApplicationStatusResponce
+                .from(loanApplicationService.getLoanApplicationStatus(id));
+
+        return ResponseEntity.ok(responce);
     }
 }
