@@ -5,9 +5,7 @@ import com.busir.gardarian.bankloansystem.entity.enums.DocumentType;
 import com.busir.gardarian.bankloansystem.entity.enums.DocumentVerificationStatus;
 import com.busir.gardarian.bankloansystem.service.dto.DocumentDecision;
 import com.busir.gardarian.bankloansystem.service.dto.DocumentResult;
-import com.busir.gardarian.bankloansystem.service.exception.DocumentIsEmptyException;
-import com.busir.gardarian.bankloansystem.service.exception.DocumentsNameException;
-import com.busir.gardarian.bankloansystem.service.exception.IncorrectLoanApplicationIdException;
+import com.busir.gardarian.bankloansystem.service.exception.*;
 import com.busir.gardarian.bankloansystem.service.interfaces.DocumentRepositoryImp;
 import com.busir.gardarian.bankloansystem.service.interfaces.LoanApplicationRepositoryImpl;
 import org.springframework.beans.factory.annotation.Value;
@@ -103,17 +101,24 @@ public class DocumentService {
         List<Document> documents = documentRepository.findByLoanApplicationId(applicationId);
 
         return documents.stream()
-                .map((docs) -> {
-                    Path filePath = Paths.get("documents").resolve(docs.getFilePath());
-                    Resource resource;
-                    try {
-                        resource = new UrlResource(filePath.toUri());
-                    } catch (MalformedURLException e) {
-                        throw new RuntimeException(e);
-                    }
-                    return new DocumentResult(docs, resource);
-                })
+                .map(DocumentResult::new)
                 .toList();
+    }
+
+    public Resource getDocumentFileById(Long id) {
+        Document document = documentRepository.findById(id);
+        if (document == null) {
+            throw new DocumentNotFoundException("Document not found");
+        }
+
+        Path filePath = Paths.get("documents").resolve(document.getFilePath());
+        Resource resource;
+        try {
+            resource = new UrlResource(filePath.toUri());
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+        return resource;
     }
 
     public void documentVerification(DocumentDecision decision){
