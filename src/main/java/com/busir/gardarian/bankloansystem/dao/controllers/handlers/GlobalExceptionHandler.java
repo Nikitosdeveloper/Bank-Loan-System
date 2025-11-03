@@ -76,4 +76,25 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleLoanApplicationNotFoundException(final Exception ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
+
+    @ExceptionHandler(value = DocumentsNameException.class)
+    public ResponseEntity<String> handleDocumentsNameException(final Exception ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(value = DocumentIsEmptyException.class)
+    public ResponseEntity<String> handleDocumentIsEmptyException(final Exception ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(value = IncorrectLoanApplicationIdException.class)
+    public ResponseEntity<String> handleIncorrectLoanApplicationIdException(final Exception ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(value = DocumentNotFoundException.class)
+    public ResponseEntity<String> handleDocumentNotFoundException(final Exception ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
 }
