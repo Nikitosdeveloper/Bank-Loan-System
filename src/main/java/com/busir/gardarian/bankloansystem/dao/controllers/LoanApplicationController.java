@@ -26,9 +26,9 @@ public class LoanApplicationController {
 
         LoanApplicationForm form = LoanApplicationSubmitRequest.createLoanApplicationForm(loanApplicationSubmitRequest, userId);
 
-        loanApplicationService.submitLoanApplication(form);
+        Long id = loanApplicationService.submitLoanApplication(form);
 
-        return ResponseEntity.ok(userId);
+        return ResponseEntity.ok(id);
     }
 
     @GetMapping("status/{id}")
