@@ -5,6 +5,7 @@ import com.busir.gardarian.bankloansystem.entity.enums.DocumentType;
 import com.busir.gardarian.bankloansystem.entity.enums.DocumentVerificationStatus;
 import com.busir.gardarian.bankloansystem.service.dto.DocumentDecision;
 import com.busir.gardarian.bankloansystem.service.dto.DocumentResult;
+import com.busir.gardarian.bankloansystem.service.dto.DownloadFileResult;
 import com.busir.gardarian.bankloansystem.service.exception.*;
 import com.busir.gardarian.bankloansystem.service.interfaces.DocumentRepositoryImp;
 import com.busir.gardarian.bankloansystem.service.interfaces.LoanApplicationRepositoryImpl;
@@ -105,7 +106,7 @@ public class DocumentService {
                 .toList();
     }
 
-    public Resource getDocumentFileById(Long id) {
+    public DownloadFileResult getDocumentFileById(Long id) {
         Document document = documentRepository.findById(id);
         if (document == null) {
             throw new DocumentNotFoundException("Document not found");
@@ -118,7 +119,7 @@ public class DocumentService {
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
-        return resource;
+        return new DownloadFileResult(resource, document.getOriginalName(), getContentTypeFromFileName(document.getOriginalName()));
     }
 
     public void documentVerification(DocumentDecision decision){
@@ -128,6 +129,22 @@ public class DocumentService {
         document.setVerificationsNotes(decision.getVerificationNotes());
 
         documentRepository.save(document);
+    }
+
+    private String getContentTypeFromFileName(String fileName) {
+        if (fileName == null) return "application/octet-stream";
+
+        String fileNameLower = fileName.toLowerCase();
+
+        if (fileNameLower.endsWith(".pdf")) {
+            return "application/pdf";
+        } else if (fileNameLower.endsWith(".jpg") || fileNameLower.endsWith(".jpeg")) {
+            return "image/jpeg";
+        } else if (fileNameLower.endsWith(".png")) {
+            return "image/png";
+        } else {
+            return "application/octet-stream";
+        }
     }
 
     private String getFileExtension(String fileName) {
