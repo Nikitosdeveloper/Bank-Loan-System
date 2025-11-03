@@ -1,6 +1,7 @@
 package com.busir.gardarian.bankloansystem.dao.controllers.handlers;
 
 import com.busir.gardarian.bankloansystem.service.exception.*;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;
 import org.springframework.http.HttpStatus;
@@ -64,5 +65,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = SignatureException.class)
     public ResponseEntity<String> handleSignatureException(final Exception ex) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token");
+    }
+
+    @ExceptionHandler(value = ExpiredJwtException.class)
+    public ResponseEntity<String> handleException(final Exception ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Refresh token is expired");
     }
 }
