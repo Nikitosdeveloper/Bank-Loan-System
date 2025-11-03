@@ -5,10 +5,7 @@ import com.busir.gardarian.bankloansystem.entity.LoanApplication;
 import com.busir.gardarian.bankloansystem.entity.enums.LoanApplicationStatus;
 import com.busir.gardarian.bankloansystem.service.dto.LoanApplicationForm;
 import com.busir.gardarian.bankloansystem.service.dto.LoanApplicationResult;
-import com.busir.gardarian.bankloansystem.service.exception.ClientAdditionalInfoNotFoundException;
-import com.busir.gardarian.bankloansystem.service.exception.LoanPurposeNotFound;
-import com.busir.gardarian.bankloansystem.service.exception.NoActiveCreditPolicy;
-import com.busir.gardarian.bankloansystem.service.exception.UserNotFoundException;
+import com.busir.gardarian.bankloansystem.service.exception.*;
 import com.busir.gardarian.bankloansystem.service.interfaces.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
@@ -58,7 +55,11 @@ public class LoanApplicationService {
     }
 
     public LoanApplicationResult getLoanApplicationStatus(Long id){
-        return new LoanApplicationResult(loanApplicationRepository.getById(id));
+        LoanApplication loanApplication = loanApplicationRepository.getById(id);
+        if (loanApplication == null) {
+            throw new LoanApplicationNotFoundException("LoanApplication not found");
+        }
+        return new LoanApplicationResult(loanApplication);
     }
 
     public List<LoanApplicationResult> getHistoryLoanApplication(Long userId){
