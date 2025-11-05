@@ -14,5 +14,5 @@ public class LoanApplicationDecision {
     private Long managerId;
     private LoanApplicationFinalDecision finalDecision;
     private String decisionComment;
-    Boolean requiredDocument = false;
+    private Boolean requiredDocument = false;
 }
