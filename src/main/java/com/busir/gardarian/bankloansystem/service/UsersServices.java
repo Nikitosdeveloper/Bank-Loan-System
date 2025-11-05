@@ -5,6 +5,7 @@ import com.busir.gardarian.bankloansystem.entity.User;
 import com.busir.gardarian.bankloansystem.entity.enums.Role;
 import com.busir.gardarian.bankloansystem.service.dto.ManagerRegistrationForm;
 import com.busir.gardarian.bankloansystem.service.dto.UserInfo;
+import com.busir.gardarian.bankloansystem.service.exception.UserNotFoundException;
 import com.busir.gardarian.bankloansystem.service.interfaces.ClientAdditionalInfoRepositoryImpl;
 import com.busir.gardarian.bankloansystem.service.interfaces.PasswordHasherImpl;
 import com.busir.gardarian.bankloansystem.service.interfaces.UserRepositoryImpl;
@@ -63,6 +64,10 @@ public class UsersServices {
     public boolean deactivateUser(Long id) {
         User user = userRepository.findById(id);
 
+        if(user == null) {
+            throw new  UserNotFoundException("User with id " + id + " not found");
+        }
+
         user.setIsActive(false);
 
         userRepository.save(user);
@@ -72,6 +77,10 @@ public class UsersServices {
 
     public boolean activateUser(Long id){
         User user = userRepository.findById(id);
+
+        if(user == null) {
+            throw new  UserNotFoundException("User with id " + id + " not found");
+        }
 
         user.setIsActive(true);
 
