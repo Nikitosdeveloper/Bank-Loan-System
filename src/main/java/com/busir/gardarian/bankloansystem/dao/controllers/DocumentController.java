@@ -1,11 +1,14 @@
 package com.busir.gardarian.bankloansystem.dao.controllers;
 
+import com.busir.gardarian.bankloansystem.dao.controllers.dto.DocumentDecisionRequest;
 import com.busir.gardarian.bankloansystem.dao.controllers.dto.DocumentResponce;
 import com.busir.gardarian.bankloansystem.entity.enums.DocumentType;
 import com.busir.gardarian.bankloansystem.service.DocumentService;
+import com.busir.gardarian.bankloansystem.service.dto.DocumentDecision;
 import com.busir.gardarian.bankloansystem.service.dto.DocumentResult;
 import com.busir.gardarian.bankloansystem.service.dto.DownloadFileResult;
 import com.busir.gardarian.bankloansystem.service.exception.DocumentsNameException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -68,5 +71,13 @@ public class DocumentController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "inline")
                 .contentType(MediaType.parseMediaType(result.getContentType()))
                 .body(result.getFile());
+    }
+
+    @PostMapping("manager/document/verification")
+    public ResponseEntity<String> verifyDocuments(@Valid @RequestBody DocumentDecisionRequest request){
+
+        documentService.documentVerification(request.createDocumentDecision());
+
+        return ResponseEntity.ok("Success");
     }
 }
