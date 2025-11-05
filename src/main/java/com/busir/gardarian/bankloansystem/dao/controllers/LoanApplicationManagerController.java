@@ -6,6 +6,7 @@ import com.busir.gardarian.bankloansystem.entity.LoanApplication;
 import com.busir.gardarian.bankloansystem.service.AccountService;
 import com.busir.gardarian.bankloansystem.service.LoanApplicationManagerService;
 import com.busir.gardarian.bankloansystem.service.dto.LoanApplicationDecision;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -34,7 +35,7 @@ public class LoanApplicationManagerController {
     }
 
     @PostMapping("decision")
-    public ResponseEntity<String> decision(@RequestBody DecisionRequest request,
+    public ResponseEntity<String> decision(@RequestBody @Valid DecisionRequest request,
                                            Authentication authentication) {
         Long managerId = accountService.validateAndGetUser(authentication.getName()).getId();
 
