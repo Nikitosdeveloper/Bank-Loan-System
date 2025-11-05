@@ -27,6 +27,7 @@ public class UsersServices {
         User user = new User();
 
         user.setEmail(form.getEmail());
+        user.setPhone(form.getPhone());
         user.setPasswordHash(passwordHasher.hashPassword(extractUsername(form.getEmail())));
         user.setRole(Role.MANAGER);
         user.setFullName(form.getFullName());
