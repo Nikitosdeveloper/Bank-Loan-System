@@ -49,7 +49,7 @@ public class UserMapper {
 
         UserDB userDB = new UserDB();
 
-        userDB.setId(userDB.getId());
+        userDB.setId(Math.toIntExact(user.getId()));
         userDB.setEmail(user.getEmail());
         userDB.setPasswordHash(user.getPasswordHash());
         userDB.setRole(user.getRole());
