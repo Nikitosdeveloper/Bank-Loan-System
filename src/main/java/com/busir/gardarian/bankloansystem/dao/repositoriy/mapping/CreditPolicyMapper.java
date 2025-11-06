@@ -15,11 +15,13 @@ public interface CreditPolicyMapper {
     @Mapping(target = "createdAt", source = "createdAt", qualifiedByName = "localDateTimeToTimestamp")
     @Mapping(target = "updatedAt", source = "updatedAt", qualifiedByName = "localDateTimeToTimestamp")
     @Mapping(target = "scoringRules", source = "scoringRules", qualifiedByName = "mapToJsonString")
+    @Mapping(target = "createdById", source = "createdBy.id")
     CreditPolicies toEntity(CreditPolicyDB creditPolicyDB);
 
     @Mapping(target = "createdAt", source = "createdAt", qualifiedByName = "timestampToLocalDateTime")
     @Mapping(target = "updatedAt", source = "updatedAt", qualifiedByName = "timestampToLocalDateTime")
     @Mapping(target = "scoringRules", source = "scoringRules", qualifiedByName = "jsonStringToMap")
+    @Mapping(target = "createdBy", ignore = true)
     CreditPolicyDB toDB(CreditPolicies creditPolicy);
 
     List<CreditPolicies> toEntity(List<CreditPolicyDB> creditPolicies);

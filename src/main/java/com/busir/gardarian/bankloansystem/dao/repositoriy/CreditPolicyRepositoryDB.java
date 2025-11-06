@@ -2,7 +2,10 @@ package com.busir.gardarian.bankloansystem.dao.repositoriy;
 
 import com.busir.gardarian.bankloansystem.dao.repositoriy.interfaces.CreditPolicyRepositoryJPA;
 import com.busir.gardarian.bankloansystem.dao.repositoriy.mapping.CreditPolicyMapper;
+import com.busir.gardarian.bankloansystem.dao.repositoriy.mapping.UserMapper;
+import com.busir.gardarian.bankloansystem.dao.repositoriy.models.CreditPolicyDB;
 import com.busir.gardarian.bankloansystem.entity.CreditPolicies;
+import com.busir.gardarian.bankloansystem.entity.User;
 import com.busir.gardarian.bankloansystem.service.interfaces.CreditPolicyRepositoryImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
@@ -18,6 +21,8 @@ import java.util.List;
 public class CreditPolicyRepositoryDB implements CreditPolicyRepositoryImpl {
     private final CreditPolicyRepositoryJPA repository;
     private final CreditPolicyMapper mapper;
+    private final UserRepositoryDB userRepository;
+    private final UserMapper userMapper;
 
     @Override
     public CreditPolicies getCreditActualPolicies() {
@@ -36,7 +41,14 @@ public class CreditPolicyRepositoryDB implements CreditPolicyRepositoryImpl {
 
     @Override
     public CreditPolicies save(CreditPolicies creditPolicies) {
-        return mapper.toEntity(repository.save(mapper.toDB(creditPolicies)));
+
+        CreditPolicyDB db = mapper.toDB(creditPolicies);
+
+        User admin = userRepository.findById(creditPolicies.getCreatedById());
+
+        db.setCreatedBy(userMapper.toDB(admin));
+
+        return mapper.toEntity(repository.save(db));
     }
 
     @Override
